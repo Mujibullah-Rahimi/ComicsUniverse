@@ -109,6 +109,54 @@ namespace ComicsUniverse.ViewModels
             }
         }
 
+        private ICommand _updateCommand;
+        public ICommand UpdateCommand
+        {
+            get
+            {
+                // if private ICommand is null
+                if (_updateCommand == null)
+                {
+                    // 
+                    _updateCommand = new RelayCommand<CharacterViewModel>(async param =>
+                    {
+                        CharacterViewModel newCharacter = new() { ProfileImage = "Unknown.jpg" };
+                        CharacterPage page = new(newCharacter);
+
+                        ContentDialog updateDialog = new()
+                        {
+                            Title = "Update character",
+                            Content = page,
+                            PrimaryButtonText = "Update",
+                            IsPrimaryButtonEnabled = false,
+                            CloseButtonText = "Cancel",
+
+                            DefaultButton = ContentDialogButton.Close,
+                            XamlRoot = _navigationService.Frame.XamlRoot
+                        };
+                        // enables the primaryButton (UpdateButton) if the newCharacter doesn't have errors or missing required info
+                        newCharacter.PropertyChanged += (sender, e) => updateDialog.IsPrimaryButtonEnabled = !newCharacter.HasErrors;
+
+                        // contentDialogResult is an enum. result will be primary (1) if user clicks the primaryButton (UpdateButton)
+                        ContentDialogResult result = await updateDialog.ShowAsync();
+
+                        // if the primary button in contentdialog is tapped
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            // returns true if    , returns false if not
+                            if (await _characterService.DeleteCharacterAsync((CharacterDto)param))
+                            {
+                                _ = Characters.Remove(param);
+                            }
+                            Characters.Add(param);
+                        }
+                    }, param => param != null);
+                }
+
+                return _updateCommand;
+            }
+        }
+
         private ICommand _settingsCommand;
         public ICommand SettingsCommand
         {

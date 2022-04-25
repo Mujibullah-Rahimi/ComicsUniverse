@@ -72,6 +72,7 @@
             <controls:ListDetailsView.ListCommandBar>
                 <CommandBar>
                     <AppBarButton Icon="Add" Label="Add" Command="{x:Bind ViewModel.AddCommand}"/>
+                    <AppBarButton Icon="Edit" Label="Update" Command="{x:Bind ViewModel.UpdateCommand}" CommandParameter="{x:Bind ViewModel.Selected, Mode=OneWay}"/>
                     <AppBarButton Icon="Delete" Label="Delete" Command="{x:Bind ViewModel.DeleteCommand}" CommandParameter="{x:Bind ViewModel.Selected, Mode=OneWay}" />
                     <CommandBar.SecondaryCommands>
                         <AppBarButton Icon="Setting" Label="Settings" Command="{x:Bind ViewModel.SettingsCommand}" />

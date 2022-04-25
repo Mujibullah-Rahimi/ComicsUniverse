@@ -43,5 +43,13 @@ namespace ComicsUniverse.Core.Services
             HttpResponseMessage response = await _httpClient.DeleteAsync($"characters/{character.CharacterId}");
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<CharacterDto> PutCharacterAsync(CharacterDto character)
+        {
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"characters", character);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<CharacterDto>();
+        }
     }
 }

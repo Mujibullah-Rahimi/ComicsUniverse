@@ -144,11 +144,11 @@ namespace ComicsUniverse.ViewModels
                         if (result == ContentDialogResult.Primary)
                         {
                             // returns true if    , returns false if not
-                            if (await _characterService.DeleteCharacterAsync((CharacterDto)param))
-                            {
-                                _ = Characters.Remove(param);
-                            }
-                            Characters.Add(param);
+                            var characterDto = await _characterService.PutCharacterAsync((CharacterDto)newCharacter);
+                            CharacterViewModel character = new(characterDto);
+
+                            Characters.Add(character);
+                            Selected = character;
                         }
                     }, param => param != null);
                 }

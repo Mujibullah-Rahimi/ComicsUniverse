@@ -10,5 +10,6 @@ namespace ComicsUniverse.Core.Contracts.Services
         Task<IEnumerable<CharacterDto>> GetCharactersAsync();
         Task<CharacterDto> CreateCharacterAsync(CharacterDto character);
         Task<bool> DeleteCharacterAsync(CharacterDto character);
+        Task<CharacterDto> PutCharacterAsync(CharacterDto character);
     }
 }
